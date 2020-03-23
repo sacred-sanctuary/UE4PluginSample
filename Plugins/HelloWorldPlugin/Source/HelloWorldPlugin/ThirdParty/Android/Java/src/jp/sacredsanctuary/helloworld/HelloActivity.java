@@ -1,0 +1,64 @@
+/*
+ * Copyright (C) 2020 Sacred Sanctuary Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package jp.sacredsanctuary.helloworld;
+
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.IBinder;
+
+import jp.sacredsanctuary.helloworld.nativeaccess.NativeAccess;
+import jp.sacredsanctuary.helloworld.service.HelloService;
+import jp.sacredsanctuary.helloworld.service.HelloServiceConnection;
+
+public class HelloActivity extends Activity implements ServiceConnection {
+    private HelloServiceConnection mHelloServiceConnection;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(getResources().getIdentifier("activity_hello", "layout", getPackageName()));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Bind to the service
+        mHelloServiceConnection = new HelloServiceConnection(this);
+        Intent intent = new Intent(this, HelloService.class);
+        bindService(intent, mHelloServiceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        unbindService(mHelloServiceConnection);
+        mHelloServiceConnection = null;
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        NativeAccess.onServiceConnectedJNI();
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        NativeAccess.onServiceDisconnectedJNI();
+    }
+}

@@ -1,0 +1,25 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "HelloWorldPlugin",
+	"Description": "Sample plugin to call Android JAVA layer",
+	"Category": "Other",
+	"CreatedBy": "Sacred Sanctuary",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "HelloWorldPlugin",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [ "Android", "IOS", "Mac", "Win32", "Win64" ]
+		}
+	]
+}

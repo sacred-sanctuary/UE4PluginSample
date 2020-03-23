@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--AndroidCamera plugin additions-->
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- init section is always evaluated once per architecture -->
+	<init>
+		<log text="Android HelloWorldPlugin init"/>
+		<!-- currently supports all architectures -->
+	</init>
+
+	<!-- optional updates applied to AndroidManifest.xml -->
+	<androidManifestUpdates>
+		<!-- How to add Permission -->
+		<addPermission android:name="android.permission.BLUETOOTH"/>
+		<addPermission android:name="android.permission.BLUETOOTH_ADMIN"/>
+		<!-- If your app targets Android 9 or lower, you can declare
+				ACCESS_COARSE_LOCATION instead. -->
+		<addPermission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+		<!-- How to add Activity -->
+		<setElement result="HelloActivity" value="activity" />
+		<addAttribute tag="$HelloActivity" name="android:name" value="jp.sacredsanctuary.helloworld.HelloActivity" />
+		<addElement tag="application" name="HelloActivity" />
+
+		<!-- How to add Service -->
+		<setElement result="HelloService" value="service" />
+		<addAttribute tag="$HelloService" name="android:name" value="jp.sacredsanctuary.helloworld.service.HelloService" />
+		<addAttribute tag="$HelloService" name="android:enabled" value="true" />
+		<addElement tag="application" name="HelloService" />
+	</androidManifestUpdates>
+	
+	<!-- optional additions to proguard -->
+	<proguardAdditions>
+		<insert>
+			-keep class jp.sacredsanctuary.helloworld.service.HelloFromNative {
+				*;
+			}
+		</insert>
+	</proguardAdditions>
+
+	<!-- optional files or directories to copy to Intermediate/Android/APK -->
+	<resourceCopies>
+		<copyDir src="$S(PluginDir)/ThirdParty/Android/Java" dst="$S(BuildDir)" />
+	</resourceCopies>
+
+z	<!--
+	<buildscriptGradleAdditions>
+		<insert>
+			dependencies {
+			}
+		</insert>
+	</buildscriptGradleAdditions>
+	-->
+
+	<!--  optional base build.gradle additions -->
+	<buildGradleAdditions>
+		<insert>
+			android
+			{
+				// ADD COMPATIBILITY OPTIONS TO BE COMPATIBLE WITH JAVA 1.8
+				compileOptions {
+					sourceCompatibility = JavaVersion.VERSION_1_8
+					targetCompatibility = JavaVersion.VERSION_1_8
+				}
+			}
+
+			// ADD SENTRY ANDROID AS A DEPENDENCY
+			dependencies {
+				implementation "androidx.annotation:annotation:1.1.0"
+			}
+		</insert>
+	</buildGradleAdditions>
+</root>
